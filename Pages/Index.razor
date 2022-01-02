@@ -9,11 +9,12 @@
     {
       @foreach (var special in specials)
       {
-        <li style="background-image: url('@special.ImageUrl')">
+        <li @onclick="@(() => ShowConfigurePizzaDialog(special))" style="Background-image: url('@special.ImageUrl')">
+          @* <li style="background-image: url('@special.ImageUrl')"> *@
           <div class="pizza-info">
-          <span class="title">@special.Name</span>
-          @special.Description
-          <span class="price">@special.GetFormattedBasePrice()</span>
+            <span class="title">@special.Name</span>
+              @special.Description
+              <span class="price">@special.GetFormattedBasePrice()</span>
           </div>
         </li>
       }
@@ -21,14 +22,22 @@
   </ul>
 </div>
 
+@if (showingConfigureDialog)
+{
+  <ConfigurePizzaDialog Pizza="configuringPizza" />
+}
+
 @code {
 List<PizzaSpecial> specials = new();
+Pizza configuringPizza;
+bool showingConfigureDialog;
 
 @* Fires after component is initialized, but before page is rendered.*@
 protected override async Task OnInitializedAsync()
 {
     specials = await HttpClient.GetFromJsonAsync<List<PizzaSpecial>>(NavigationManager.BaseUri + "specials");
 }
+
 @* Code below was replaced by the code above. *@
 @* protected override void OnInitialized()
 {
@@ -42,4 +51,16 @@ protected override async Task OnInitializedAsync()
     new PizzaSpecial { Name = "Classic pepperoni", BasePrice =  10.5M, Description = "It's the pizza you grew up with, but Blazing hot!", ImageUrl="img/pizzas/pepperoni.jpg" }               
     });
   } *@
+
+  void ShowConfigurePizzaDialog(PizzaSpecial special)
+  {
+    configuringPizza = new Pizza()
+    {
+      Special = special,
+      SpecialId = special.Id,
+      Size = Pizza.DefaultSize
+    };
+
+    showingConfigureDialog = true;
+  }
 }		
