@@ -8,8 +8,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 builder.Services.AddHttpClient();
-  builder.Services.AddDbContext<PizzaStoreContext>(options => 
-      options.UseSqlite("Data Source=pizza.db"));
+builder.Services.AddDbContext<PizzaStoreContext>(options => 
+    options.UseSqlite("Data Source=pizza.db"));
 
 var app = builder.Build();
 

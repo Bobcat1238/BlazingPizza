@@ -24,10 +24,12 @@
 @code {
 List<PizzaSpecial> specials = new();
 
+@* Fires after component is initialized, but before page is rendered.*@
 protected override async Task OnInitializedAsync()
 {
     specials = await HttpClient.GetFromJsonAsync<List<PizzaSpecial>>(NavigationManager.BaseUri + "specials");
 }
+@* Code below was replaced by the code above. *@
 @* protected override void OnInitialized()
 {
   specials.AddRange(new List<PizzaSpecial>
