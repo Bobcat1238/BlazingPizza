@@ -11,6 +11,8 @@ builder.Services.AddHttpClient();
 builder.Services.AddDbContext<PizzaStoreContext>(options => 
     options.UseSqlite("Data Source=pizza.db"));
 
+builder.Services.AddScoped<OrderState>();
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())

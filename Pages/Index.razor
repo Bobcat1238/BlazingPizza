@@ -1,6 +1,7 @@
 @page "/"
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
+@inject OrderState OrderState
 
 <div class="main">
   <h1>Blazing Pizzas</h1>
@@ -9,7 +10,8 @@
     {
       @foreach (var special in specials)
       {
-        <li @onclick="@(() => ShowConfigurePizzaDialog(special))" style="Background-image: url('@special.ImageUrl')">
+        <li @onclick="@(() => OrderState.ShowConfigurePizzaDialog(special))" style="Background-image: url('@special.ImageUrl')">
+          @* <li @onclick="@(() => ShowConfigurePizzaDialog(special))" style="Background-image: url('@special.ImageUrl')"> *@
           @* <li style="background-image: url('@special.ImageUrl')"> *@
           <div class="pizza-info">
             <span class="title">@special.Name</span>
@@ -22,15 +24,20 @@
   </ul>
 </div>
 
-@if (showingConfigureDialog)
+@if (OrderState.ShowingConfigureDialog)
+{
+  <ConfigurePizzaDialog Pizza="OrderState.ConfiguringPizza" />
+}
+@* @if (showingConfigureDialog)
 {
   <ConfigurePizzaDialog Pizza="configuringPizza" />
-}
+} *@
 
 @code {
-List<PizzaSpecial> specials = new();
-Pizza configuringPizza;
-bool showingConfigureDialog;
+List<PizzaSpecial> specials = new List<PizzaSpecial>();
+
+@* Pizza configuringPizza;
+bool showingConfigureDialog; *@
 
 @* Fires after component is initialized, but before page is rendered.*@
 protected override async Task OnInitializedAsync()
@@ -52,7 +59,7 @@ protected override async Task OnInitializedAsync()
     });
   } *@
 
-  void ShowConfigurePizzaDialog(PizzaSpecial special)
+@*   void ShowConfigurePizzaDialog(PizzaSpecial special)
   {
     configuringPizza = new Pizza()
     {
@@ -62,5 +69,5 @@ protected override async Task OnInitializedAsync()
     };
 
     showingConfigureDialog = true;
-  }
+  } *@
 }		
